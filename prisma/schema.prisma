@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  phone     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+  Emojis    Emojis[]
+
+}
+
+model Emojis {
+  id     Int      @id @default(autoincrement())
+  day    DateTime
+  userId String
+  emoji  String
+  User   User     @relation(fields: [userId], references: [id])
+}
