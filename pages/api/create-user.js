@@ -3,11 +3,11 @@ const client = require('twilio')(process.env.TWILIO_ID, process.env.TWILIO_AUTH)
 
 export default async function Create(req, res) {
   try {
-    console.log(req.body)
     const account = await prisma.user.create({
       data: {
         username: req.query.username,
-        phone: req.query.phone
+        phone: req.query.phone,
+        confirmed: false
       },
     })
     await client.messages 

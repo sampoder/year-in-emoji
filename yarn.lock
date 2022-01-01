@@ -1667,6 +1667,11 @@ extend@^3.0.0:
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
 
+extract-emojis@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/extract-emojis/-/extract-emojis-1.0.2.tgz#591d2f175cf6cbb135c4c32105d3971642c8cf3c"
+  integrity sha512-wE+Fcr71ItgPtwcKywPvL5Gx70wkKy85lgZC1L8R+kTMbiNIA8bPfIQAPp4LQ++KdfT0a9X+QyJQHGz11AoaAw==
+
 figlet@^1.1.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/figlet/-/figlet-1.5.0.tgz#2db4d00a584e5155a96080632db919213c3e003c"

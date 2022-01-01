@@ -13,13 +13,14 @@ model User {
   phone     String   @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
+  confirmed Boolean
   Emojis    Emojis[]
 
 }
 
 model Emojis {
   id     Int      @id @default(autoincrement())
-  day    DateTime
+  day    DateTime @default(now())
   userId String
   emoji  String
   User   User     @relation(fields: [userId], references: [id])
