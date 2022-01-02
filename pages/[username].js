@@ -15,12 +15,17 @@ import Head from 'next/head'
 
 export default function Page({ dates, emojis, emojisArray, username }) {
   const router = useRouter()
-  const fetcher = (...args) => fetch(...args).then(res => res.json())
+  const fetcher = (...args) =>
+    fetch(...args).then(res => ({
+      emoji: emojisArray[Math.floor(Math.random() * emojisArray.length)],
+    }))
   const { data } = useSWR(
     `https://ranmoji.herokuapp.com/emojis/api/v.1.0/`,
     fetcher,
     {
-      initialData: { emoji: '😁' },
+      initialData: {
+        emoji: emojisArray[Math.floor(Math.random() * emojisArray.length)],
+      },
       refreshInterval: 1000,
     },
   )
@@ -159,5 +164,5 @@ export async function getStaticProps({ params }) {
       user.Emojis[emojiIndex].emoji
     emojisArray.push(user.Emojis[emojiIndex].emoji)
   }
-  return { props: { dates, emojis, emojisArray, username: user.username } }
+  return { props: { dates, emojis, username: user.username } }
 }
