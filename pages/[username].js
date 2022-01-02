@@ -15,17 +15,12 @@ import Head from 'next/head'
 
 export default function Page({ dates, emojis, emojisArray, username }) {
   const router = useRouter()
-  const fetcher = (...args) =>
-    fetch(...args).then(res => ({
-      emoji: emojisArray[Math.floor(Math.random() * emojisArray.length)],
-    }))
+  const fetcher = (...args) => fetch(...args).then(res => res.json())
   const { data } = useSWR(
     `https://ranmoji.herokuapp.com/emojis/api/v.1.0/`,
     fetcher,
     {
-      initialData: {
-        emoji: emojisArray[Math.floor(Math.random() * emojisArray.length)],
-      },
+      initialData: { emoji: '😁' },
       refreshInterval: 1000,
     },
   )
