@@ -1559,6 +1559,11 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
+emoji-named-characters@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/emoji-named-characters/-/emoji-named-characters-1.0.2.tgz#cdeb36d0e66002c4b9d7bf1dfbc3a199fb7d409b"
+  integrity sha1-zes20OZgAsS5178d+8Ohmft9QJs=
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -2353,6 +2358,11 @@ lodash.once@^4.0.0:
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
   integrity sha1-DdOXEhPHxW34gJd9UEyI+0cal6w=
 
+lodash.shuffle@^4.1.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/lodash.shuffle/-/lodash.shuffle-4.2.0.tgz#145b5053cf875f6f5c2a33f48b6e9948c6ec7b4b"
+  integrity sha1-FFtQU8+HX29cKjP0i26ZSMbse0s=
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -2997,6 +3007,14 @@ querystringify@^2.1.1:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
+
+random-emoji@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/random-emoji/-/random-emoji-1.0.2.tgz#578298377f56baba45f6ad4797da1a0303321e8c"
+  integrity sha1-V4KYN39WurpF9q1Hl9oaAwMyHow=
+  dependencies:
+    emoji-named-characters "^1.0.2"
+    lodash.shuffle "^4.1.0"
 
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"

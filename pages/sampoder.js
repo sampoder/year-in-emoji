@@ -1,15 +1,11 @@
 import { decode } from 'html-entities'
+import prisma from '../lib/prisma'
 import {
-  Button,
   Box,
   Grid,
   Heading,
-  Text,
-  Image,
   Flex,
-  Card,
-  Input,
-  Link as A,
+  Link,
   Container,
 } from 'theme-ui'
 import useSWR from 'swr'
@@ -17,20 +13,25 @@ import { useRouter } from 'next/router'
 import Meta from '../components/meta'
 import Head from 'next/head'
 
-export default function Page({ dates }) {
+export default function Page({ dates, emojis, emojisArray, username }) {
   const router = useRouter()
-  const fetcher = (...args) => fetch(...args).then(res => res.json())
+  const fetcher = (...args) =>
+    fetch(...args).then(res => ({
+      emoji: emojisArray[Math.floor(Math.random() * emojisArray.length)],
+    }))
   const { data } = useSWR(
     `https://ranmoji.herokuapp.com/emojis/api/v.1.0/`,
     fetcher,
     {
-      initialData: { emoji: '😁' },
+      initialData: {
+        emoji: emojisArray[Math.floor(Math.random() * emojisArray.length)],
+      },
       refreshInterval: 1000,
     },
   )
   return (
     <Flex sx={{ minHeight: '100vh', alignItems: 'center' }}>
-      <Meta title={`Year in Emoji`} />
+      <Meta title={`@${username}'s Year in Emoji`} />
       <Head>
         <link
           rel="icon"
@@ -40,15 +41,29 @@ export default function Page({ dates }) {
         />
       </Head>
       <Container sx={{ my: 4 }}>
-        <Grid columns="1fr 1fr 1fr" gap={'32px'}>
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Heading
+            sx={{ fontSize: 8 }}
+            dangerouslySetInnerHTML={{ __html: `${data.emoji}` }}
+          ></Heading>
+          <Heading as="h1" mb={3} mt={3}>
+            @{username}'s Year in Emoji
+          </Heading>
+        </Box>
+        <Grid
+          columns={['1fr', '1fr 1fr', '1fr 1fr 1fr']}
+          gap={'32px'}
+          sx={{ py: 3 }}
+        >
           {Object.values(dates).map((month, index) => (
-            <Box>
+            <Box key={month[0].monthWords}>
               <Heading sx={{ color: 'muted', mb: 3 }}>
                 {month[0].monthWords}
               </Heading>
               <Grid columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr" gap={'8px'}>
                 {month.map(day => (
                   <Box
+                    key={month[0].monthWords + day.date + day.day}
                     sx={{
                       width: '100%',
                       height: 0,
@@ -68,7 +83,11 @@ export default function Page({ dates }) {
                         width: '100%',
                       }}
                     >
-                      <Heading as="h1">🚀</Heading>
+                      <Heading as="h1">
+                        {typeof emojis[day.month.toString()] == 'undefined'
+                          ? ''
+                          : emojis[day.month.toString()][day.date.toString()]}
+                      </Heading>
                     </Flex>
                   </Box>
                 ))}
@@ -76,18 +95,20 @@ export default function Page({ dates }) {
             </Box>
           ))}
         </Grid>
+        <Box sx={{ fontSize: 2, fontWeight: 800, textAlign: 'center' }}>
+          By <Link target="_blank" href="https://github.com/sampoder">@sampoder</Link>, open
+          sourced <Link href="https://github.com/sampoder">here</Link>.
+        </Box>
       </Container>
     </Flex>
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   var start = new Date('01/01/2022')
   var end = new Date('12/31/2022')
   let dates = {}
   var loop = new Date(start)
-  console.log(loop)
-  console.log(end)
   while (loop <= end) {
     if (loop.getDate() == 1) {
       dates[loop.getMonth().toString()] = []
@@ -114,6 +135,25 @@ export async function getServerSideProps() {
     var newDate = loop.setDate(loop.getDate() + 1)
     loop = new Date(newDate)
   }
-  console.log(dates)
-  return { props: { dates } }
+  const user = await prisma.user.findUnique({
+    where: {
+      username: 'sampoder',
+    },
+    include: {
+      Emojis: true,
+    },
+  })
+  let emojis = {}
+  let emojisArray = []
+  for (let emojiIndex in user.Emojis) {
+    let emojiDate = new Date(user.Emojis[emojiIndex].day)
+    console.log(emojiDate)
+    if (typeof emojis[emojiDate.getMonth().toString()] == 'undefined') {
+      emojis[emojiDate.getMonth().toString()] = {}
+    }
+    emojis[emojiDate.getMonth().toString()][emojiDate.getDate().toString()] =
+      user.Emojis[emojiIndex].emoji
+    emojisArray.push(user.Emojis[emojiIndex].emoji)
+  }
+  return { props: { dates, emojis, emojisArray, username: user.username } }
 }

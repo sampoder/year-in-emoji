@@ -12,6 +12,7 @@ import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import Meta from '../components/meta'
 import Head from 'next/head'
+var randomEmoji = require('random-emoji');
 
 export default function Page({ dates, emojis, emojisArray, username }) {
   const router = useRouter()
@@ -31,7 +32,7 @@ export default function Page({ dates, emojis, emojisArray, username }) {
   )
   return (
     <Flex sx={{ minHeight: '100vh', alignItems: 'center' }}>
-      <Meta title={`@${username}'s Year in Emoji`} />
+      <Meta title={`@random's Year in Emoji`} />
       <Head>
         <link
           rel="icon"
@@ -47,7 +48,7 @@ export default function Page({ dates, emojis, emojisArray, username }) {
             dangerouslySetInnerHTML={{ __html: `${data.emoji}` }}
           ></Heading>
           <Heading as="h1" mb={3} mt={3}>
-            @{username}'s Year in Emoji
+            @random's Year in Emoji
           </Heading>
         </Box>
         <Grid
@@ -70,6 +71,7 @@ export default function Page({ dates, emojis, emojisArray, username }) {
                       paddingTop: '100%',
                       position: 'relative',
                       bg: day.date == 0 ? 'white' : 'sunken',
+                      opacity: day.date == 0 ? 0 : 1,
                     }}
                   >
                     <Flex
@@ -84,9 +86,7 @@ export default function Page({ dates, emojis, emojisArray, username }) {
                       }}
                     >
                       <Heading as="h1">
-                        {typeof emojis[day.month.toString()] == 'undefined'
-                          ? ''
-                          : emojis[day.month.toString()][day.date.toString()]}
+                        {randomEmoji.random({count: 1})[0].character}
                       </Heading>
                     </Flex>
                   </Box>
@@ -155,5 +155,6 @@ export async function getStaticProps() {
       user.Emojis[emojiIndex].emoji
     emojisArray.push(user.Emojis[emojiIndex].emoji)
   }
+  emojisArray = randomEmoji.random({count: 500}).map(x=>x.character)
   return { props: { dates, emojis, emojisArray, username: user.username } }
 }
