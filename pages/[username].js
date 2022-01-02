@@ -104,7 +104,16 @@ export default function Page({ dates, emojis, emojisArray, username }) {
   )
 }
 
-export async function getStaticProps() {
+export function getStaticPaths(){
+  return {
+    paths: [
+      { params: { username: 'sampoder' } } // This would normally call the database but has been limited here due to me being on a Twilio trial
+    ],
+    fallback: true
+  };
+}
+
+export async function getStaticProps({ params }) {
   var start = new Date('01/01/2022')
   var end = new Date('12/31/2022')
   let dates = {}
@@ -137,7 +146,7 @@ export async function getStaticProps() {
   }
   const user = await prisma.user.findUnique({
     where: {
-      username: 'sampoder',
+      username: params.username,
     },
     include: {
       Emojis: true,
