@@ -109,7 +109,7 @@ export function getStaticPaths(){
     paths: [
       { params: { username: 'sampoder' } } // This would normally call the database but has been limited here due to me being on a Twilio trial
     ],
-    fallback: true
+    fallback: false
   };
 }
 
@@ -164,5 +164,5 @@ export async function getStaticProps({ params }) {
       user.Emojis[emojiIndex].emoji
     emojisArray.push(user.Emojis[emojiIndex].emoji)
   }
-  return { props: { dates, emojis, username: user.username } }
+  return { props: { dates, emojis, emojisArray, username: user.username } }
 }
