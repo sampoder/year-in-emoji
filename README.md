@@ -1,4 +1,4 @@
-# year-in-emoji
+# Year in Emoji
 😁 Log your year in emoji!
 ## Inspiration
 
